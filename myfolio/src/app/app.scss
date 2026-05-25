@@ -1,0 +1,120 @@
+// 1. The main layout engine (avoids flaky calc() heights)
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+// 2. Cleaned top toolbar
+.app-toolbar-top {
+  position: sticky;
+  flex-shrink: 0;
+  top: 0;
+  z-index: 1000; // Keeps it above expanding panels
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid var(--mat-sys-on-surface, rgba(0,0,0,0.1));
+}
+
+// 3. Fixed-up main layout block
+.app-content {
+  flex: 1; // Pushes the footer down naturally if content is short
+  overflow-y: auto;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto; // Centers the content container horizontally
+  padding: 24px 16px; // Responsive default padding for mobile
+  box-sizing: border-box;
+
+  // Scales up padding nicely for tablets and desktops
+  @media (min-width: 768px) {
+    padding: 32px 24px;
+  }
+}
+
+// 4. Cleaned bottom toolbar
+.app-toolbar-bottom {
+  position: sticky;
+  flex-shrink: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid var(--mat-sys-on-surface, rgba(0,0,0,0.1));
+}
+
+// 5. Internal Component Optimization (Optional but looks great)
+.tab-body {
+  padding: 24px 0; // Adds precise top/bottom breathing room for content inside tabs
+  
+  mat-accordion {
+    display: block;
+    margin-top: 16px; // Separates headers/descriptions from the accordion blocks
+  }
+}
+
+
+::ng-deep .mat-grid-tile .mat-grid-tile-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px !important; // Rounded corners
+  background-color: white !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-color: var(--mat-sys-primary);
+  }
+}
+
+.grid-label {
+  font-size: 0.8rem;
+  color: var(--mat-sys-outline);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.grid-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--mat-sys-on-surface);
+  text-align: center;
+}
+
+.resp-list {
+  padding-left: 20px;
+  margin-top: 8px;
+  
+  li {
+    margin-bottom: 8px;
+    color: var(--mat-sys-on-surface-variant);
+    line-height: 1.5;
+    position: relative;
+    list-style-type: none;
+
+    &::before {
+      content: "•";
+      color: var(--mat-sys-primary);
+      font-weight: bold;
+      display: inline-block; 
+      width: 1em;
+      margin-left: -1em;
+    }
+  }
+}
+
+.resp-section {
+  padding: 8px 4px;
+  
+  p {
+    margin-bottom: 4px;
+  }
+}

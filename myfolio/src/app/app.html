@@ -1,3 +1,123 @@
-hello
+<div class="app-container">
+  <mat-toolbar color="primary" class="app-toolbar-top">
+    <span>MyFolio</span>
+  </mat-toolbar>
 
-<mat-slide-toggle>Toggle me!</mat-slide-toggle>
+  <main class="app-content">
+    <mat-tab-group color="primary" dynamicHeight>
+      <mat-tab label="Overview">
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">home</mat-icon>
+        </ng-template>
+        <div class="tab-body">
+          <h2 class="mat-headline-small">Welcome Area</h2>
+          <p>This is your primary overview content.</p>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Tech Life">
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">code</mat-icon>
+        </ng-template>
+        <div class="tab-body">
+          <h2 class="mat-headline-small">Tech Life</h2>
+          <p>This is your primary about tect stack info content.</p>
+          <mat-grid-list cols="4" rowHeight="100px" gutterSize="16px">
+            @for (tile of tiles; track tile.label) {
+            <mat-grid-tile [colspan]="tile.cols" [rowspan]="tile.rows">
+              <span class="grid-label">{{tile.label}}</span>
+              <span class="grid-value">
+                {{tile.value}}
+                @if (tile.label === 'Status') {
+                <span class="lwd-countdown">
+                  ({{ lwd | daysUntil }} days remaining)
+                </span>
+                }
+              </span>
+            </mat-grid-tile>
+            }
+          </mat-grid-list>
+          <mat-accordion>
+            <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+              <mat-expansion-panel-header>
+                <mat-panel-title> Techstack </mat-panel-title>
+              </mat-expansion-panel-header>
+              @for (tech of techStack; track $index) {
+              <p>{{tech.name}} </p>
+              }
+            </mat-expansion-panel>
+          </mat-accordion>
+          <mat-accordion>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title> Experience </mat-panel-title>
+              </mat-expansion-panel-header>
+              <mat-accordion>
+                @for (exp of experience; track exp.company) {
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>{{exp.company}}</mat-panel-title>
+                    <mat-panel-description>{{exp.role}}</mat-panel-description>
+                  </mat-expansion-panel-header>
+
+                  <div class="resp-section">
+                    <p><strong>Period:</strong> {{exp.period}}</p>
+                    <p><strong>Key Responsibilities:</strong></p>
+                    <ul class="resp-list">
+                      @for( resp of exp.responsibilities; track resp) {
+                      <li>{{resp}}</li>
+                      }
+                    </ul>
+                  </div>
+                </mat-expansion-panel>
+                }
+              </mat-accordion>
+            </mat-expansion-panel>
+          </mat-accordion>
+          <mat-accordion>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title> Non-Technical Skills </mat-panel-title>
+              </mat-expansion-panel-header>
+              @for (skill of softSkills; track skill) {
+              <p>{{skill}}</p>
+              }
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Projects">
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">folder</mat-icon>
+        </ng-template>
+        <div class="tab-body">
+          <p>Adjust your application preferences here.</p>
+          <mat-accordion>
+            <mat-expansion-panel hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title> This is the expansion title </mat-panel-title>
+                <mat-panel-description> This is a summary of the content </mat-panel-description>
+              </mat-expansion-panel-header>
+              <h2 class="mat-headline-small">Blogs/Discussion</h2>
+              <p>This is your primary content for the blogs and discussion section.</p>
+            </mat-expansion-panel>
+            <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+              <mat-expansion-panel-header>
+                <mat-panel-title> Self aware panel </mat-panel-title>
+                <mat-panel-description>
+                  Currently I am {{panelOpenState() ? 'open' : 'closed'}}
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <p>I'm visible because I am open</p>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </main>
+
+  <mat-toolbar color="primary" class="app-toolbar-bottom">
+    <span>footer</span>
+  </mat-toolbar>
+</div>
