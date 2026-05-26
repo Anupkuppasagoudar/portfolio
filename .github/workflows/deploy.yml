@@ -1,0 +1,38 @@
+name: Build and Deploy Portfolio
+
+on:
+  push:
+    branches:
+      - main  # Make sure your branch is named 'main' and not 'master'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+
+      - name: Setup Node 🏗️
+        uses: actions/setup-node@v4
+        with:
+          node-version: 21
+
+      - name: Install and Build 🚀
+        run: |
+          cd myfolio
+          npm install
+          npx ng build --configuration production --base-href /portfolio/
+
+      - name: Fix for SPA Routing (404.html) 🛠️
+        # This copies index.html to 404.html to prevent GitHub Pages routing errors
+        run: cp myfolio/dist/myfolio/browser/index.html myfolio/dist/myfolio/browser/404.html
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: myfolio/dist/myfolio/browser
+          branch: gh-pages
