@@ -1,4 +1,6 @@
-// 1. The main layout engine (avoids flaky calc() heights)
+/* 1. LAYOUT ENGINE 
+   Handles the "Holy Grail" layout with a sticky header and footer 
+*/
 .app-container {
   display: flex;
   flex-direction: column;
@@ -6,55 +8,37 @@
   overflow: hidden;
 }
 
-// 2. Cleaned top toolbar
 .app-toolbar-top {
-  position: sticky;
   flex-shrink: 0;
-  top: 0;
-  z-index: 1000; // Keeps it above expanding panels
+  z-index: 1000;
   display: flex;
   justify-content: center;
   border-bottom: 1px solid var(--mat-sys-on-surface, rgba(0,0,0,0.1));
 }
 
-// 3. Fixed-up main layout block
 .app-content {
-  flex: 1; // Pushes the footer down naturally if content is short
+  flex: 1;
   overflow-y: auto;
   width: 100%;
   max-width: 1200px;
-  margin: 0 auto; // Centers the content container horizontally
-  padding: 24px 16px; // Responsive default padding for mobile
+  margin: 0 auto;
+  padding: 24px 16px;
   box-sizing: border-box;
 
-  // Scales up padding nicely for tablets and desktops
   @media (min-width: 768px) {
     padding: 32px 24px;
   }
 }
 
-// 4. Cleaned bottom toolbar
-.app-toolbar-bottom {
-  position: sticky;
-  flex-shrink: 0;
-  bottom: 0;
-  z-index: 1000;
-  display: flex;
-  justify-content: center;
-  border-top: 1px solid var(--mat-sys-on-surface, rgba(0,0,0,0.1));
-}
-
-// 5. Internal Component Optimization (Optional but looks great)
+/* 2. TAB & COMPONENT WRAPPERS */
 .tab-body {
-  padding: 24px 0; // Adds precise top/bottom breathing room for content inside tabs
-  
-  mat-accordion {
-    display: block;
-    margin-top: 16px; // Separates headers/descriptions from the accordion blocks
-  }
+  padding: 24px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
-
+/* 3. GRID SYSTEM (Cleaned & Consolidated) */
 ::ng-deep .mat-grid-tile .mat-grid-tile-content {
   display: flex;
   flex-direction: column;
@@ -62,7 +46,7 @@
   align-items: center;
   padding: 16px;
   border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 12px !important; // Rounded corners
+  border-radius: 12px !important;
   background-color: white !important;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -70,13 +54,13 @@
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    border-color: var(--mat-sys-primary);
+    border-color: var(--mat-sys-primary, #3f51b5);
   }
 }
 
 .grid-label {
   font-size: 0.8rem;
-  color: var(--mat-sys-outline);
+  color: var(--mat-sys-outline, #666);
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-bottom: 4px;
@@ -85,24 +69,60 @@
 .grid-value {
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--mat-sys-on-surface);
+  color: var(--mat-sys-on-surface, #333);
   text-align: center;
+}
+
+.lwd-countdown {
+  font-size: 0.85rem;
+  color: #ff4081; /* Pink highlight for urgency */
+  font-weight: 700;
+}
+
+.tech-panel {
+  margin-bottom: 12px !important;
+  border-radius: 12px !important;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.01);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  }
+}
+
+.mat-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-basis: 35%; /* Unified width for title section */
+  font-weight: 600;
+}
+
+.tech-icon {
+  color: var(--mat-sys-primary, #3f51b5);
+}
+
+/* 5. EXPERIENCE & LIST STYLING */
+.resp-section {
+  padding: 8px 4px;
 }
 
 .resp-list {
   padding-left: 20px;
   margin-top: 8px;
-  
+  list-style-type: none;
+
   li {
     margin-bottom: 8px;
-    color: var(--mat-sys-on-surface-variant);
+    color: var(--mat-sys-on-surface-variant, #555);
     line-height: 1.5;
     position: relative;
-    list-style-type: none;
 
     &::before {
       content: "•";
-      color: var(--mat-sys-primary);
+      color: var(--mat-sys-primary, #3f51b5);
       font-weight: bold;
       display: inline-block; 
       width: 1em;
@@ -111,10 +131,97 @@
   }
 }
 
-.resp-section {
-  padding: 8px 4px;
-  
-  p {
-    margin-bottom: 4px;
+/* 6. SOFT SKILLS (Chips) */
+.soft-skills-container {
+  padding: 16px 0;
+}
+
+.custom-chip {
+  background-color: #f5f5f5 !important;
+  font-weight: 500 !important;
+}
+
+/* 7. FOOTER & SOCIAL LINKS (Standardized) */
+.app-toolbar-bottom {
+  flex-shrink: 0;
+  height: auto;
+  min-height: 56px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+  padding: 8px 24px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.footer-links-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.link-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  a {
+    text-decoration: none;
+    color: inherit;
+    font-size: 14px;
+    font-weight: 500;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
+}
+
+/* 8. UTILITIES */
+.hide-mobile {
+  @media (max-width: 600px) {
+    display: none;
+  }
+}
+
+
+/* Tab Header Icons */
+.tab-icon {
+  margin-right: 8px; /* Space between icon and text label */
+  vertical-align: middle;
+  font-size: 20px; /* Slightly smaller to fit better in the tab row */
+  width: 20px;
+  height: 20px;
+}
+
+/* Tab Group Customization */
+::ng-deep .mat-mdc-tab-label-container {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+::ng-deep .mat-mdc-tab .mdc-tab__text-label {
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+/* Ensuring the Tab Body matches your Unified UI */
+.tab-body {
+  padding: 32px 16px;
+  max-width: 900px; /* Aligns with your tech and experience sections */
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Specific styling for the Articles Markdown area */
+.markdown-body {
+  padding: 20px;
+  background-color: var(--mat-sys-surface-variant, #f8f9fa);
+  border-radius: 8px;
+  border-left: 4px solid var(--mat-sys-primary, #3f51b5);
+  font-size: 1rem;
+  line-height: 1.6;
 }

@@ -9,9 +9,67 @@
         <ng-template mat-tab-label>
           <mat-icon class="tab-icon">home</mat-icon>
         </ng-template>
-        <div class="tab-body">
-          <h2 class="mat-headline-small">Welcome Area</h2>
-          <p>This is your primary overview content.</p>
+
+        <div class="tab-body overview-container">
+          <!-- Hero Header -->
+          <div class="welcome-header">
+            <h1 class="mat-display-medium">Hi, I'm Anup Kuppasagoudar</h1>
+            <p class="mat-title-medium subtitle">Fullstack Software Engineer based in Bangalore</p>
+          </div>
+
+          <mat-divider class="section-divider"></mat-divider>
+
+          <!-- Two-Column Layout: Profile vs Personality -->
+          <div class="blueprint-grid">
+
+            <!-- Professional Mindset Side -->
+            <div class="blueprint-card professional">
+              <div class="card-header">
+                <mat-icon>assignment_ind</mat-icon>
+                <h3 class="mat-title-large">How I Work</h3>
+              </div>
+              <p class="mat-body-large text-muted">
+                With 4.6 years of industrial experience, my approach to engineering boils down to accountability and
+                execution. I specialize in bridging the gap between business requirements and clean, production-grade
+                applications.
+              </p>
+              <ul class="mat-body-medium blueprint-list">
+                <li><strong>End-to-End Ownership:</strong> Give me the Acceptance Criteria, and I’ll drive the feature
+                  to completion with minimal hand-holding.</li>
+                <li><strong>Technical Translation:</strong> I enjoy active roles in technical and business discussions,
+                  translating complex logic into real-world value.</li>
+                <li><strong>Autonomous Flow:</strong> I thrive in environments that value high independence and clear
+                  accountability.</li>
+              </ul>
+            </div>
+
+            <!-- Personal Identity Side -->
+            <div class="blueprint-card personal">
+              <div class="card-header">
+                <mat-icon>fingerprint</mat-icon>
+                <h3 class="mat-title-large">Who I Am</h3>
+              </div>
+              <p class="mat-body-large text-muted">
+                Outside of my core engineering stack, I’m someone who values continuous, incremental progress, new
+                challenges, and the everyday balance of life.
+              </p>
+              <ul class="mat-body-medium blueprint-list">
+                <li><strong>The Mindset:</strong> Currently deep-diving into AI/ML concepts and exploring Python MCP
+                  server architectures just for the curiosity of it.</li>
+                <li><strong>The Discipline:</strong> Dedicated to steady growth—whether that's refining a system design
+                  or progressively pushing reps in a home workout.</li>
+                <li><strong>The Fuel:</strong> Grounded by simple routines. Always powered by a reliable cup of tea,
+                  South Indian breakfast staples, and a great plate of Biryani.</li>
+              </ul>
+            </div>
+          </div>
+          <!-- Bottom Punchline Banner -->
+          <div class="philosophy-banner">
+            <p class="mat-body-large italic">
+              "Whether it’s a business problem, an AI model, or a fitness target, I look at everything through the same
+              lens: understand the goal, put in the reps, and deliver."
+            </p>
+          </div>
         </div>
       </mat-tab>
 
@@ -21,7 +79,6 @@
         </ng-template>
         <div class="tab-body">
           <h2 class="mat-headline-small">Tech Life</h2>
-          <p>This is your primary about tect stack info content.</p>
           <mat-grid-list cols="4" rowHeight="100px" gutterSize="16px">
             @for (tile of tiles; track tile.label) {
             <mat-grid-tile [colspan]="tile.cols" [rowspan]="tile.rows">
@@ -38,19 +95,46 @@
             }
           </mat-grid-list>
           <mat-accordion>
-            <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
+            @for (tech of techStack; track tech.name) {
+            <mat-expansion-panel class="tech-panel">
               <mat-expansion-panel-header>
-                <mat-panel-title> Techstack </mat-panel-title>
+                <mat-panel-title>
+                  <!-- Dynamic icon assignment depending on the tech -->
+                  <mat-icon class="tech-icon">
+                    @if (tech.name.includes('.NET')) { layers }
+                    @else if (tech.name.includes('Angular')) { dashboard }
+                    @else if (tech.name.includes('Python')) { psychology }
+                    @else if (tech.name.includes('SQL') || tech.name.includes('Mongo')) { storage }
+                    @else { terminal }
+                  </mat-icon>
+                  <strong>{{tech.name}}</strong>
+                </mat-panel-title>
+                <mat-panel-description class="hide-mobile">
+                  {{tech.description}}
+                </mat-panel-description>
               </mat-expansion-panel-header>
-              @for (tech of techStack; track $index) {
-              <p>{{tech.name}} </p>
-              }
+              <div class="tech-content">
+                <div class="usage-section">
+                  <span class="label">Where & How I Use It:</span>
+                  <p class="usage-text">{{tech.usage}}</p>
+                </div>
+
+                <mat-divider></mat-divider>
+
+                <div class="tech-footer">
+                  <span class="mat-caption text-muted">Core Competency</span>
+                </div>
+              </div>
             </mat-expansion-panel>
+            }
           </mat-accordion>
           <mat-accordion>
             <mat-expansion-panel>
               <mat-expansion-panel-header>
-                <mat-panel-title> Experience </mat-panel-title>
+                <mat-panel-title>
+                  <mat-icon class="tech-icon">trending_up</mat-icon>
+                  <strong>Experience</strong>
+                </mat-panel-title>
               </mat-expansion-panel-header>
               <mat-accordion>
                 @for (exp of experience; track exp.company) {
@@ -74,50 +158,112 @@
               </mat-accordion>
             </mat-expansion-panel>
           </mat-accordion>
-          <mat-accordion>
-            <mat-expansion-panel>
-              <mat-expansion-panel-header>
-                <mat-panel-title> Non-Technical Skills </mat-panel-title>
-              </mat-expansion-panel-header>
-              @for (skill of softSkills; track skill) {
-              <p>{{skill}}</p>
-              }
-            </mat-expansion-panel>
-          </mat-accordion>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <mat-icon class="tech-icon">psychology</mat-icon>
+                Non-Technical Skills
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="soft-skills-container">
+              <mat-chip-set aria-label="Soft skills">
+                @for (skill of softSkills; track skill) {
+                <mat-chip class="custom-chip">{{skill}}</mat-chip>
+                }
+              </mat-chip-set>
+            </div>
+          </mat-expansion-panel>
         </div>
       </mat-tab>
 
       <mat-tab label="Projects">
         <ng-template mat-tab-label>
-          <mat-icon class="tab-icon">folder</mat-icon>
+          <mat-icon class="tab-icon">folder_open</mat-icon>
         </ng-template>
+
         <div class="tab-body">
-          <p>Adjust your application preferences here.</p>
-          <mat-accordion>
-            <mat-expansion-panel hideToggle>
-              <mat-expansion-panel-header>
-                <mat-panel-title> This is the expansion title </mat-panel-title>
-                <mat-panel-description> This is a summary of the content </mat-panel-description>
-              </mat-expansion-panel-header>
-              <h2 class="mat-headline-small">Blogs/Discussion</h2>
-              <p>This is your primary content for the blogs and discussion section.</p>
-            </mat-expansion-panel>
-            <mat-expansion-panel (opened)="panelOpenState.set(true)" (closed)="panelOpenState.set(false)">
-              <mat-expansion-panel-header>
-                <mat-panel-title> Self aware panel </mat-panel-title>
-                <mat-panel-description>
-                  Currently I am {{panelOpenState() ? 'open' : 'closed'}}
-                </mat-panel-description>
-              </mat-expansion-panel-header>
-              <p>I'm visible because I am open</p>
-            </mat-expansion-panel>
-          </mat-accordion>
+          <div class="interest-section">
+            <h2 class="mat-headline-small">Areas of Interest</h2>
+            <mat-chip-set>
+              @for (interest of interests; track interest) {
+              <mat-chip class="custom-chip">{{interest}}</mat-chip>
+              }
+            </mat-chip-set>
+          </div>
+
+          <mat-divider></mat-divider>
+
+          <div class="articles-section">
+            <h2 class="mat-headline-small">Articles & Publications</h2>
+
+            @if (loadingArticles()) {
+            <mat-spinner diameter="40"></mat-spinner>
+            }
+
+            <mat-accordion class="unified-accordion" multi>
+              @for (article of articles(); track article.name) {
+              <mat-expansion-panel class="custom-panel" (opened)="loadArticleContent(article)">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <mat-icon class="tech-icon">description</mat-icon>
+                    <strong>{{ article.name | titlecase | removeExtension }}</strong>
+                  </mat-panel-title>
+                  <mat-panel-description>
+                    Click to read article from GitHub
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+
+                <div class="markdown-body">
+                  <markdown [data]="article.contentContent"></markdown>
+                  <div class="article-footer">
+                    <a [href]="article.html_url" target="_blank" mat-button color="accent">
+                      View on GitHub
+                    </a>
+                  </div>
+                </div>
+              </mat-expansion-panel>
+              }
+            </mat-accordion>
+          </div>
         </div>
       </mat-tab>
     </mat-tab-group>
   </main>
 
   <mat-toolbar color="primary" class="app-toolbar-bottom">
-    <span>footer</span>
+    <span class="footer-title">Connect With Me:</span>
+
+    <div class="footer-links-container">
+      <span class="link-item">
+        <mat-icon class="link-icon">email</mat-icon>
+        <a href="mailto:anup.kuppasagoudar@gmail.com" target="_blank">Email</a>
+      </span>
+
+      <span class="link-item">
+        <mat-icon class="link-icon">launch</mat-icon>
+        <a href="https://www.linkedin.com/in/anup-kuppasagoudar/" target="_blank">LinkedIn</a>
+      </span>
+
+      <span class="link-item">
+        <mat-icon class="link-icon">code</mat-icon>
+        <a href="https://github.com/Anupkuppasagoudar/Anupkuppasagoudar" target="_blank">GitHub</a>
+      </span>
+
+      <span class="link-item">
+        <mat-icon class="link-icon">public</mat-icon>
+        <a href="https://x.com/Askanoooop" target="_blank">X</a>
+      </span>
+
+      <span class="link-item">
+        <mat-icon class="link-icon">photo_camera</mat-icon>
+        <a href="https://www.instagram.com/an.up_98" target="_blank">Instagram</a>
+      </span>
+
+      <span class="link-item">
+        <mat-icon class="link-icon">group</mat-icon>
+        <a href="https://www.facebook.com/iamanup.k/" target="_blank">Facebook</a>
+      </span>
+    </div>
   </mat-toolbar>
 </div>
